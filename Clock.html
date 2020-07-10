@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Clock</title>
+        <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA////AAkJCQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiAAAAAAIRIREgAAAAISEREhIAAAIRERERESAAISERERESEgAhEREiERESACERESIhERIAIhESERIRIgAhESERESESACEhEREREhIAAhERERERIAAAISEREhIAAAACESERIAAAAAAiIiIAAAAAAAAAAAAAD//wAA+B8AAPAPAADgBwAAwAMAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAMADAADgBwAA8A8AAPgfAAD//wAA" rel="icon" type="image/x-icon" />
+        <style>
+            body{
+                background-color: #121212;
+            }
+            h1, #clock {
+                font-family: 'Orbitron', sans-serif;
+                color: #66ff99;
+                font-size: 56px;
+                text-align: center;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+            #big,#small,#speaker{
+                    
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 10%;
+            color: #121212;
+            margin-bottom: 1%;
+            border-radius: 10%;
+
+            }
+        </style>
+    </head>
+    <body>
+        <h1>The current time is:</h1>
+        <h1 id ="clock"></h1>
+        <button onclick="Bigger()"id= "big">Bigger</button>
+        <button onclick="Smaller()"id ="small">Smaller</button>
+        <button onclick="Talk()" id="speaker">Text-to-Speech</button>
+        <script>
+            var timer;
+            var seconds;
+            var hours;
+            var minutes;
+            function GetTime(){
+                var date = new Date();
+                 hour = date.getHours();
+                 minutes = date.getMinutes();
+                seconds = date.getSeconds();
+                hour = update(hour);
+                minutes = update(minutes);
+                seconds = update(seconds);
+                timer = document.getElementById("clock").innerText = hour + " : "+minutes + " : "+ seconds;
+                var time = setTimeout(function(){GetTime()},1000);
+
+
+            }
+            //Функция за изписване на Double-digit number, ако часовете, минутите или секундите са цифра по-малка от 10 
+
+            function update(a){
+                if(a<10){
+                    return "0"+a;
+                }
+                else{
+                    return a;
+                }
+            }
+            var helper = 56;
+            var size = document.getElementById("clock");
+            function Bigger(){
+               helper+=10;
+               size.style.fontSize=parseInt(helper)+"px";
+               clamp_check();
+            }
+            function Smaller(){
+
+                helper-=10;
+                size.style.fontSize=parseInt(helper)+"px";
+                clamp_check();
+            }
+           function clamp_check(){
+               if(helper==96)
+               document.getElementById("big").setAttribute('disabled',true);
+               else
+               {
+               document.getElementById("big").removeAttribute('disabled');
+               
+               }
+               if(helper==26)
+               document.getElementById("small").setAttribute('disabled',true);
+               else
+               document.getElementById("small").removeAttribute('disabled');
+           }
+           function Talk(){
+
+               seconds+=3;
+               if(seconds>=60)
+               seconds=0;
+               timer = hour + " : "+minutes + " : "+ seconds;
+               speechSynthesis.speak(new SpeechSynthesisUtterance( "It is "+timer));
+           }
+            GetTime();
+        </script>
+    </body>
+</html>
