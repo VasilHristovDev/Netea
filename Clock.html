@@ -2,49 +2,90 @@
 <html>
     <head>
         <title>Clock</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA////AAkJCQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiAAAAAAIRIREgAAAAISEREhIAAAIRERERESAAISERERESEgAhEREiERESACERESIhERIAIhESERIRIgAhESERESESACEhEREREhIAAhERERERIAAAISEREhIAAAACESERIAAAAAAiIiIAAAAAAAAAAAAAD//wAA+B8AAPAPAADgBwAAwAMAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAMADAADgBwAA8A8AAPgfAAD//wAA" rel="icon" type="image/x-icon" />
         <style>
             body{
                 background-color: #121212;
             }
+            h2{
+                font-family: 'Orbitron', sans-serif;
+                color: #66ff99;
+                font-size: 3vw;
+                text-align: center;
+           
+                
+              
+            }
             h1, #clock {
                 font-family: 'Orbitron', sans-serif;
                 color: #66ff99;
-                font-size: 56px;
+                font-size: 6vw;
                 text-align: center;
-                padding-top: 40px;
+                padding-top: 10px;
                 padding-bottom: 40px;
             }
-            #big,#small,#speaker{
+            #big,#small,#speaker,#format{
                     
             display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 10%;
+            min-width:80px;
+            width: 20%;
             color: #121212;
             margin-bottom: 1%;
-            border-radius: 10%;
+           
 
+            }
+            @media screen and (max-width: 800px) {
+            #big, #small,#format,#speaker {
+                width: 30%;
+                /* The width is 100%, when the viewport is 800px or smaller */
+            }
+            }
+            @media screen and (max-width: 800px) {
+            #clock, h1,h2 {
+                width: 100%;
+                /* The width is 100%, when the viewport is 800px or smaller */
+            }
             }
         </style>
     </head>
     <body>
+        <h2 id="date">Date: </h2>
         <h1>The current time is:</h1>
         <h1 id ="clock"></h1>
-        <button onclick="Bigger()"id= "big">Bigger</button>
-        <button onclick="Smaller()"id ="small">Smaller</button>
-        <button onclick="Talk()" id="speaker">Text-to-Speech</button>
+        <button onclick="Bigger()"id= "big" class="btn btn-light">Bigger</button>
+        <button onclick="Smaller()"id ="small" class="btn btn-light">Smaller</button>
+        <button onclick="Talk()" id="speaker" class="btn btn-light">Text-to-Speech</button>
+        <button onclick="Format()" id="format" class="btn btn-light">12 hours format</button>
         <script>
             var timer;
             var seconds;
             var hours;
             var minutes;
+            var format = false;
             function GetTime(){
                 var date = new Date();
-                 hour = date.getHours();
-                 minutes = date.getMinutes();
+                hour = date.getHours();
+                if(format==true)
+                {
+                    if(hour>12)
+                    {
+                        hour-=12;
+                    }
+                    
+                }
+                else
+                {
+                    hour = date.getHours();
+                }
+                minutes = date.getMinutes();
                 seconds = date.getSeconds();
-                hour = update(hour);
                 minutes = update(minutes);
                 seconds = update(seconds);
                 timer = document.getElementById("clock").innerText = hour + " : "+minutes + " : "+ seconds;
@@ -61,8 +102,9 @@
                 else{
                     return a;
                 }
+                
             }
-            var helper = 56;
+            var helper = 66;
             var size = document.getElementById("clock");
             function Bigger(){
                helper+=10;
@@ -76,7 +118,7 @@
                 clamp_check();
             }
            function clamp_check(){
-               if(helper==96)
+               if(helper==86)
                document.getElementById("big").setAttribute('disabled',true);
                else
                {
@@ -96,6 +138,44 @@
                timer = hour + " : "+minutes + " : "+ seconds;
                speechSynthesis.speak(new SpeechSynthesisUtterance( "It is "+timer));
            }
+           function Format()
+           {
+               if(format == false)
+               {
+               format = true;
+               document.getElementById("format").innerText="24-hours format";
+               }
+               else
+               {
+               format = false;
+               document.getElementById("format").innerText="12-hours format";
+               }
+           }
+           function GetDate(){
+               var d = new Date();
+               var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+               var days = ["","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+               let help="";
+               if(d.getDate()==1||d.getDate()%10==1&&d.getDate()!=11)
+               {
+                   help = "st";
+               }
+               else if(d.getDate()==2||d.getDate()%10==2&&d.getDate()!=12)
+               {
+                   help = "nd";
+               }
+               else if(d.getDate()==3||d.getDate()%10==3&&d.getDate()!=13)
+               {
+                   help = "rd";
+               }
+               else
+               {
+                help="th";
+               }
+               document.getElementById("date").innerText = days[d.getDay()]+" "+months[d.getMonth()]+" "+d.getDate()+" "+help+" "+d.getFullYear();
+               var time = setTimeout(function(){GetDate()},1000);
+           }
+           GetDate();
             GetTime();
         </script>
     </body>
