@@ -131,12 +131,8 @@
                document.getElementById("small").removeAttribute('disabled');
            }
            function Talk(){
-
-               seconds+=3;
-               if(seconds>=60)
-               seconds=0;
-               timer = hour + " : "+minutes + " : "+ seconds;
-               speechSynthesis.speak(new SpeechSynthesisUtterance( "It is "+timer));
+               
+               speechSynthesis.speak(new SpeechSynthesisUtterance( "It is "+hour+"a' clock and "+minutes+"minutes"));
            }
            function Format()
            {
