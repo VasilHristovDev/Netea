@@ -29,8 +29,7 @@
                 padding-top: 10px;
                 padding-bottom: 40px;
             }
-            #big,#small,#speaker,#format{
-                    
+            #big,#small,#speaker,#format{  
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -41,16 +40,26 @@
            
 
             }
+            
             @media screen and (max-width: 800px) {
             #big, #small,#format,#speaker {
                 width: 30%;
-                /* The width is 100%, when the viewport is 800px or smaller */
+                
+            }
+            }
+           
+            @media screen and (max-width: 800px) {
+            #clock, h1 {
+                width: 100%;
+                font-size: 8vw;
+                
             }
             }
             @media screen and (max-width: 800px) {
-            #clock, h1,h2 {
+            h2 {
                 width: 100%;
-                /* The width is 100%, when the viewport is 800px or smaller */
+                font-size: 5vw;
+                
             }
             }
         </style>
@@ -69,6 +78,7 @@
             var hours;
             var minutes;
             var format = false;
+            //Функция за часовника, използва се Date() като готов обект
             function GetTime(){
                 var date = new Date();
                 hour = date.getHours();
@@ -90,6 +100,7 @@
                 seconds = update(seconds);
                 timer = document.getElementById("clock").innerText = hour + " : "+minutes + " : "+ seconds;
                 var time = setTimeout(function(){GetTime()},1000);
+                
 
 
             }
@@ -104,36 +115,47 @@
                 }
                 
             }
-            var helper = 66;
+            var helper = 6;
+            if($(window).width<=800&&$(window).height<=600)
+            {
+                helper = 8;
+            }
+            else
+            helper = 6;
             var size = document.getElementById("clock");
+            //Функция за уголемяване на часовника
             function Bigger(){
-               helper+=10;
-               size.style.fontSize=parseInt(helper)+"px";
+               helper+=1;
+               size.style.fontSize=parseInt(helper)+"vw";
                clamp_check();
             }
+            //Функция за смаляване на часовника
             function Smaller(){
 
-                helper-=10;
-                size.style.fontSize=parseInt(helper)+"px";
+                helper-=1;
+                size.style.fontSize=parseInt(helper)+"vw";
                 clamp_check();
             }
+            //Функция, която проверява дали големината на надписа надвишава максимума или е по-малък от минимума
            function clamp_check(){
-               if(helper==86)
+               if(helper==9)
                document.getElementById("big").setAttribute('disabled',true);
                else
                {
                document.getElementById("big").removeAttribute('disabled');
                
                }
-               if(helper==26)
+               if(helper==2)
                document.getElementById("small").setAttribute('disabled',true);
                else
                document.getElementById("small").removeAttribute('disabled');
            }
+           ///Функция за text-to-speech бутона
            function Talk(){
                
                speechSynthesis.speak(new SpeechSynthesisUtterance( "It is "+hour+"a' clock and "+minutes+"minutes"));
            }
+           //Функция за Формата на часовника (12-24 часов)
            function Format()
            {
                if(format == false)
@@ -147,6 +169,7 @@
                document.getElementById("format").innerText="12-hours format";
                }
            }
+           // Функция за датата, собствена имплементация отново с обекта Date()
            function GetDate(){
                var d = new Date();
                var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
