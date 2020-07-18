@@ -35,8 +35,12 @@
             margin-right: auto;
             min-width:80px;
             width: 20%;
-            color: #121212;
+            color: #66ff99;
+            background-color:transparent;
+            border-color:#66ff99;
+            border-width: 4px;
             margin-bottom: 1%;
+            
            
 
             }
@@ -62,22 +66,26 @@
                 
             }
             }
+           
         </style>
     </head>
     <body>
         <h2 id="date">Date: </h2>
+        
         <h1>The current time is:</h1>
         <h1 id ="clock"></h1>
         <button onclick="Bigger()"id= "big" class="btn btn-light">Bigger</button>
         <button onclick="Smaller()"id ="small" class="btn btn-light">Smaller</button>
         <button onclick="Talk()" id="speaker" class="btn btn-light">Text-to-Speech</button>
         <button onclick="Format()" id="format" class="btn btn-light">12 hours format</button>
+    
         <script>
             var timer;
             var seconds;
             var hours;
             var minutes;
             var format = false;
+           
             //Функция за часовника, използва се Date() като готов обект
             function GetTime(){
                 var date = new Date();
